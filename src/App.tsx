@@ -5,6 +5,7 @@ import normalize from './helpers/normalizeText';
 import {Header} from 'react-native-elements';
 import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context';
 import PersonItem from './component/PersonItem';
+import variant from 'current-variant';
 
 declare const global: {HermesInternal: null | {}};
 
@@ -13,22 +14,10 @@ const App = () => {
   const [persons, setPersons] = React.useState<Person[]>([]);
 
   React.useEffect(() => {
-    setPersons([
-      {
-        id: 1,
-        email: 'jane.doe@example.org',
-        first_name: 'Jane',
-        last_name: 'Doe',
-        avatar: 'https://reqres.in/img/faces/2-image.jpg',
-      },
-      {
-        id: 2,
-        email: 'john.doe@example.org',
-        first_name: 'John',
-        last_name: 'Doe',
-      },
-    ]);
-    setSource('local');
+    variant.fetchUsers().then((users) => {
+      setPersons(users);
+      setSource(variant.source);
+    });
   }, []);
 
   return (
